@@ -20,12 +20,12 @@ public class Main {
         //3. Если содержит "ова " то печатаем на экран: Уважаемая {name}
         // Если содержит "ов " то печатаем на экран: Уважаемый {name}
         // В иных случаях печатаем на экран: Неизвестное лицо {name}
-        if (name.contains("ова") || name.contains("ОВА")){
-            System.out.println("Уважаемая "+name);
-        } else if (name.contains("ов") || name.contains("ОВ")) {
-            System.out.println("Уважаемый "+name);
+        if (name.contains("ОВА")){
+            System.out.println("Уважаемая ".toLowerCase() + name);
+        } else if (name.contains("ОВ")) {
+            System.out.println("Уважаемый ".toUpperCase() + name);
         }else {
-            System.out.println("Неизвестное лицо "+name);
+            System.out.println("Неизвестное лицо ".toUpperCase() + name);
         }
 
     }
@@ -107,22 +107,20 @@ public class Main {
         //Колбасы 2000кг
         //Ветчины 8511кг
         //Шейки 6988кг
-        profitAfterTaxes("Колбаса",800, 2000);
-        profitAfterTaxes("Ветчина",350, 8511);
-        profitAfterTaxes("Шейка",500, 6988);
+        System.out.printf("Прибыль после налогов, при продаже %.2f",
+                        (profitAfterTaxes("Колбаса",800, 2000)
+                        + profitAfterTaxes("Ветчина",350, 8511)
+                        + profitAfterTaxes("Шейка",500, 6988)));
     }
 
     //Прибыль после налогов
-    public static void profitAfterTaxes(String name, int coast, int volume){
+    public static double profitAfterTaxes(String name, int coast, int volume){
         int costPrice = costPrice(name, volume);
         int income = income(coast, volume);
         int consumption =consumption(costPrice, volume);
         int profitBeforeTaxes = profitBeforeTaxes(income,consumption);
         double profit = taxes(profitBeforeTaxes);
-        System.out.println("Прибыль после налогов, при продаже " + name + ": "
-                +((profitBeforeTaxes-profit)>0?((profitBeforeTaxes-profit) + " руб"):("Прибыль отсутствует, расходы: "+
-                profitBeforeTaxes+" руб")));
-
+        return profit;
     }
     //Себестоимость
     public static int costPrice(String name, int volume){
@@ -171,10 +169,10 @@ public class Main {
             taxes = profit * 0.08;
         }
         if (profit >= 1000_000 && profit <= 2000_000){
-            taxes = (profit * 0.08) + (profit * 0.1);
+            taxes = ((999_999 * 0.08) + ((profit-999_999) * 0.1));
         }
         if (profit > 2000_000){
-            taxes = (profit * 0.08) + (profit * 0.1) + (profit - 2000_000) * 0.13;
+            taxes = (999_999  * 0.08) + (1000_001 * 0.1) + (profit - 2000_000) * 0.13;
         }
         return taxes;
     }
